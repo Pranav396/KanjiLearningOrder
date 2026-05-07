@@ -67,6 +67,34 @@ df = fetch(version, cluster, jlpt)
 df.index = range(1, len(df) + 1)
 st.dataframe(df[display_cols], use_container_width=True)
 
+# Character lookup.
+search = st.text_input('Enter a kanji character:')
+lookup_version = st.selectbox(
+    'Learning Order',
+    options=[('Utility First', 'learning_order_u'), ('Simplicity First', 'learning_order_s')],
+    format_func=lambda x: x[0],
+    key='lookup_version'
+)
+
+if search:
+    conn = get_conn()
+    result = pd.read_sql(f'''
+        SELECT lo.rank, k.character AS Character, c.cluster_label AS Cluster, c.learnability AS Learnability, 
+                k.jlpt_new AS JLPT, k.wk_level AS "WaniKani Level", k.strokes AS Strokes
+        FROM kanji k
+        JOIN clusters c ON k.unicode = c.unicode
+        JOIN {lookup_version[1]} lo ON k.unicode = lo.unicode
+        WHERE k.character = "{search}"
+    ''', conn)
+    conn.close()
+    
+    if result.empty:
+        st.warning('Character not found.')
+    else:
+        st.markdown(f'**Rank:** {result["rank"].values[0]} / 2136')
+        result.index = [1]
+        st.dataframe(result[['Character', 'Cluster', 'Learnability', 'JLPT', 'WaniKani Level', 'Strokes']], use_container_width=True)
+
 # The main scatterplot.
 st.divider()
 st.subheader('Simplicity vs. Utility')
