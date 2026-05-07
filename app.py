@@ -129,3 +129,6 @@ st.markdown('''
 - **[kanji-data](https://github.com/davidluzgouveia/kanji-data)** by davidluzgouveia: JLPT levels, stroke counts, and grade. (MIT License)
 - **[kanji-frequency](https://github.com/scriptin/kanji-frequency)** by Dmitry Shpika: Corpus frequency ranks. (CC BY 4.0)
 ''')
+
+# Acknowledging Claude.
+st.markdown('<p style="font-size: 12px; color: gray;">This dashboard was made using assistance from <a href="https://claude.ai">Claude</a> by Anthropic.</p>', unsafe_allow_html=True)
