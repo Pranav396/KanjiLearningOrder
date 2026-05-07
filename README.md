@@ -15,11 +15,14 @@ The full analysis is documented in `project.ipynb`, covering data collection, cl
 ├── kanji.db              # SQLite database
 ├── requirements.txt      # Python dependencies
 ├── Data/                 # Raw data files
+├── Data/                 # Raw data files
 │   ├── jouyou.json       # Jōyō kanji data (davidluzgouveia)
+│   ├── kyouiku.json      # Kyōiku kanji data (davidluzgouveia) - Unused
 │   ├── wk_kanji.json     # WaniKani kanji data (via API)
 │   ├── aozora.csv        # Aozora Bunko frequency (scriptin)
 │   ├── wikipedia.csv     # Wikipedia frequency (scriptin)
-│   └── news.csv          # News frequency (scriptin)
+│   ├── news.csv          # News frequency (scriptin)
+│   └── kanjidic2.xml     # KANJIDIC2 (EDRDG) — Unused
 └── wanikani.py           # WaniKani API fetch script
 ```
 
