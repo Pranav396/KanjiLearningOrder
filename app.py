@@ -93,7 +93,7 @@ if search:
     else:
         st.markdown(f'**Rank:** {result["rank"].values[0]} / 2136')
         result.index = [1]
-        st.dataframe(result[['Character', 'Cluster', 'Learnability', 'JLPT', 'WaniKani Level', 'Strokes']], use_container_width=True)
+        st.dataframe(result[['Character', 'Cluster', 'Learnability', 'JLPT', 'WaniKani Level', 'Strokes']], use_container_width=True, hide_index=True)
 
 # The main scatterplot.
 st.divider()
