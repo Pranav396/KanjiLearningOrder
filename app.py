@@ -65,7 +65,7 @@ def fetch(version, cluster, jlpt):
 display_cols = ['Character', 'JLPT', 'WaniKani Level', 'Strokes', 'Learnability', 'Cluster']
 df = fetch(version, cluster, jlpt)
 df.index = range(1, len(df) + 1)
-st.dataframe(df[display_cols], use_container_width=True)
+st.dataframe(df[display_cols], use_container_width=True, hide_index=True)
 
 # Character lookup.
 search = st.text_input('Enter a kanji character:')
