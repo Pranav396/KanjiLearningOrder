@@ -84,6 +84,43 @@ while 0 indicates the most.''')
 st.markdown('''**Utility Score** reflects how frequently a character appears across various sources; 
 a score of 1 indicates the most common, while 0 indicates the rarest.''')
 
+# Exploratory analysis.
+st.divider()
+st.subheader('Exploratory Analysis')
+
+conn = get_conn()
+full_df = pd.read_sql('''
+    SELECT k.character, k.jlpt_new, k.wk_level, k.grade, c.simp_score, c.util_score, c.learnability
+    FROM kanji k JOIN clusters c ON k.unicode = c.unicode
+''', conn)
+conn.close()
+
+full_jlpt = full_df[full_df['jlpt_new'] != 0]
+
+# The comparative scatterplots.
+for col, title, data in [
+    ('jlpt_new', 'JLPT Level', full_jlpt),
+    ('wk_level', 'WaniKani Level', full_df),
+    ('grade', 'Grade', full_df)
+]:
+    fig = px.scatter(data, x='simp_score', y='util_score', color=col,
+        labels={'character':'Character', 'simp_score': 'Simplicity Score', 'util_score': 'Utility Score', col: title},
+        hover_data={'character':True, 'simp_score':':.4f', 'util_score':':.4f'},
+        title=f'Simplicity vs. Utility by {title}')
+    st.plotly_chart(fig, use_container_width=True)
+
+# The comparative histograms.
+for col, title, data in [
+    ('jlpt_new', 'JLPT Level', full_jlpt),
+    ('wk_level', 'WaniKani Level', full_df)
+]:
+    avg = data.groupby(col)['learnability'].mean().reset_index()
+    fig = px.bar(avg, x=col, y='learnability',
+        labels={col: title, 'learnability': 'Average Learnability'},
+        hover_data={'learnability':':.4f'},
+        title=f'Average Learnability by {title}')
+    st.plotly_chart(fig, use_container_width=True)
+
 # Citations and stuff.
 st.divider()
 st.markdown('### Data Sources')
