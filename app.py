@@ -45,7 +45,7 @@ jlpt = st.sidebar.selectbox(
 def fetch(version, cluster, jlpt):
     conn = get_conn()
     query = f'''
-        SELECT k.character AS "Character", k.jlpt_new AS JLPT, k.wk_level AS "WaniKani Level",
+        SELECT lo.rank AS Rank, k.character AS Character, k.jlpt_new AS JLPT, k.wk_level AS "WaniKani Level",
                k.strokes AS Strokes, c.util_score AS "Utility Score", c.simp_score AS "Simplicity Score", 
                c.learnability AS Learnability, c.cluster_label AS Cluster
         FROM kanji k
@@ -62,7 +62,7 @@ def fetch(version, cluster, jlpt):
     conn.close()
     return df
 
-display_cols = ['Character', 'JLPT', 'WaniKani Level', 'Strokes', 'Learnability', 'Cluster']
+display_cols = ['Rank', 'Character', 'JLPT', 'WaniKani Level', 'Strokes', 'Learnability', 'Cluster']
 df = fetch(version, cluster, jlpt)
 df.index = range(1, len(df) + 1)
 st.dataframe(df[display_cols], use_container_width=True, hide_index=True)
@@ -70,7 +70,7 @@ st.dataframe(df[display_cols], use_container_width=True, hide_index=True)
 # Character lookup.
 search = st.text_input('Enter a kanji character:')
 lookup_version = st.selectbox(
-    'Learning Order',
+    'Learning Order For Search',
     options=[('Utility First', 'learning_order_u'), ('Simplicity First', 'learning_order_s')],
     format_func=lambda x: x[0],
     key='lookup_version'
